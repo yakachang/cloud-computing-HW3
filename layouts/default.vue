@@ -40,6 +40,11 @@ export default {
       fixed: false,
       items: [
         {
+          icon: 'mdi-account-group',
+          title: 'Members',
+          to: '/member/',
+        },
+        {
           icon: 'mdi-file',
           title: 'Translate',
           to: '/translate/',
