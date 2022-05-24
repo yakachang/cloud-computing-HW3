@@ -42,6 +42,7 @@
 <script>
 export default {
   name: 'TranslatePage',
+  middleware: 'auth',
   data() {
     return {
       password: 'Password',
