@@ -45,22 +45,7 @@ export default {
   middleware: 'auth',
   data() {
     return {
-      password: 'Password',
-      show: false,
-      message: '',
       translatedText: '',
-      // marker: true,
-      // iconIndex: 0,
-      // icons: [
-      //   'mdi-emoticon',
-      //   'mdi-emoticon-cool',
-      //   'mdi-emoticon-dead',
-      //   'mdi-emoticon-excited',
-      //   'mdi-emoticon-happy',
-      //   'mdi-emoticon-neutral',
-      //   'mdi-emoticon-sad',
-      //   'mdi-emoticon-tongue',
-      // ],
     }
   },
   computed: {
