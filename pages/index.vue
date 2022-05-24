@@ -26,19 +26,19 @@ export default {
   name: 'IndexPage',
   middleware: 'auth',
   mounted() {
-    if (this.isAuthenticated) {
+    if (!this.isAuthenticated) {
       this.$router.replace("/login/")
     }
   },
   computed: {
     isAuthenticated() {
-      return this.$store.state.auth.authenticated
+      return this.$store.state.authUser
     },
   },
   methods: {
     async logout() {
       await this.$fire.auth.signOut()
-      this.$router.push('/login')
+      this.$router.replace('/login')
     }
   }
 }
