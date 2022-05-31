@@ -46,6 +46,11 @@ export default {
         },
         {
           icon: 'mdi-file',
+          title: 'Vocab',
+          to: '/vocab/',
+        },
+        {
+          icon: 'mdi-file',
           title: 'Translate',
           to: '/translate/',
         },
