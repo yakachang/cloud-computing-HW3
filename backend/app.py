@@ -21,11 +21,13 @@ def build_pipeline(pretrained_model):
 
 
 
-@app.route("/inference", methods=["POST"])
+@app.route("/inference", methods=["GET"])
 def inference():
-    data = request.get_json(force=True)
+    # data = request.get_json(force=True)
 
-    question = data['question']
+    # print(data)
+    # question = data['question']
+    question = request.args.get('question', default = '*', type = str)
 
     res = qa_pipeline({'question': question, 'context': ctx})
 
