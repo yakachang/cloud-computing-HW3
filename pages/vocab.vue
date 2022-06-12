@@ -51,10 +51,11 @@
               <v-col cols="12">
                 <v-card
                   class="ma-5"
+                  style="height: 50vh"
                 >
                   <v-card-title class="text-h4">{{ vocabs[cardIdx]['headword'] }}</v-card-title>
                   <v-card-text>
-                    <div class="text-subtitle-1">
+                    <div class="text-h6">
                       <p>({{ vocabs[cardIdx]['pos'] }}.)</p>
                       <p>Definition: {{ vocabs[cardIdx]['en_def'] }}</p>
                       <p>中文定義： {{ vocabs[cardIdx]['ch_def'] }}</p>
