@@ -4,7 +4,7 @@
       <v-list shaped>
         <v-subheader class="text-h5 my-5">CEFR level</v-subheader>
         <v-list-item-group
-          v-model="selectedItem"
+          v-model="selectedLevel"
           color="primary"
         >
           <v-list-item
@@ -51,14 +51,14 @@
               <v-card
                 class="ma-5"
               >
-                <v-card-title class="text-h4">apple</v-card-title>
+                <v-card-title class="text-h4">{{ vocabs[0]['headword'] }}</v-card-title>
                 <v-card-text>
-                  <div class="text-h6">
-                    <p>(noun.)</p>
-                    <p>Definition: a round fruit with firm, white flesh and a green or red skin</p>
-                    <p>中文定義： 蘋果</p>
-                    <p>Example: to peel an apple</p>
-                    <p>中文翻譯： 削蘋果</p>
+                  <div class="text-subtitle-1">
+                    <p>({{ vocabs[0]['pos'] }}.)</p>
+                    <p>Definition: {{ vocabs[0]['en_def'] }}</p>
+                    <p>中文定義： {{ vocabs[0]['ch_def'] }}</p>
+                    <p>Example: {{ vocabs[0]['en_example'] }}</p>
+                    <p>中文翻譯： {{ vocabs[0]['ch_example'] }}</p>
                   </div>
                 </v-card-text>
               </v-card>
@@ -78,9 +78,45 @@
 <script>
 export default {
   name: 'VocabPage',
+  async asyncData({store, $fire}) {
+    const userIdToken = store.state.authUser.uid
+    console.log(userIdToken)
+    
+    let startIdxMapper = {}
+    let startIdx = 0
+    const startIdxPromise = $fire.firestore.collection('user').doc(userIdToken).get().then(doc => {
+      startIdxMapper = doc.data()
+      console.log(startIdxMapper)
+      startIdx = startIdxMapper['A1']
+    })
+
+    let vocabs = {}
+    const vocabsPromise = $fire.firestore.collection('A1').get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        vocabs[doc.id] = doc.data()
+      })
+    })
+
+    await Promise.all([startIdxPromise, vocabsPromise])
+
+    return {
+      userIdToken,
+      startIdxMapper,
+      startIdx,
+      vocabs
+    }
+  },
   data() {
     return {
-      selectedItem: 1,
+      selectedLevel: 0,
+      levelMapper: {
+        0: 'A1',
+        1: 'A2',
+        2: 'B1',
+        3: 'B2',
+        4: 'C1',
+        5: 'C2'
+      },
       items: [
         { text: 'A1', icon: 'mdi-flag' },
         { text: 'A2', icon: 'mdi-flag' },
@@ -89,11 +125,16 @@ export default {
         { text: 'C1', icon: 'mdi-flag' },
         { text: 'C2', icon: 'mdi-flag' },
       ],
-      vocabs: [
-        { headword: 'apple', 'pos': 'noun.', 'en_def': 'Definition: a round fruit with firm, white flesh and a green, red, or yellow skin' },
-        { headword: 'banana', 'pos': 'noun.', 'en_def': '...' },
-      ]
     }
-  }
+  },
+  computed: {
+  },
+  watch: {
+    'selectedLevel'() {
+      const level = this.levelMapper[this.selectedLevel]
+      const startIdx = this.startIdxMapper[level]
+      console.log(startIdx)
+    }
+  },
 }
 </script>
