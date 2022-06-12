@@ -41,8 +41,8 @@ export default {
       items: [
         {
           icon: 'mdi-account-group',
-          title: 'Members',
-          to: '/member/',
+          title: 'Home',
+          to: '/',
         },
         {
           icon: 'mdi-file',
