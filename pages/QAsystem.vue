@@ -24,11 +24,11 @@
             <v-col cols="12">
               <blockquote class="blockquote" v-show="answer">
                 &#8220;{{ answer }}&#8221;
-                <footer>
+                <!-- <footer>
                   <small>
                     <em>&mdash;Helsinki-NLP/opus-mt-zh-en</em>
                   </small>
-                </footer>
+                </footer> -->
               </blockquote>
             </v-col>
           </v-row>
@@ -42,11 +42,12 @@
 
 <script>
 export default {
-  name: 'Q&APage',
+  name: 'QAPage',
   middleware: 'auth',
   data() {
     return {
       answer: '',
+      question: '',
     }
   },
   computed: {
@@ -59,10 +60,14 @@ export default {
       const params = {
         question: this.question
       }
-      const response = await this.$axios.$get(
+      const promise = this.$axios.$get(
         `/inference`, { params }
-      )
-      this.answer = response["text"]
+      ).then(response => {
+        this.answer = response["answer"]
+      }).catch(error => {
+        console.log(error)
+      })
+      await promise
     },
     clearMessage () {
       this.question = ''

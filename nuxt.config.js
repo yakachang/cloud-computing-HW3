@@ -44,12 +44,16 @@ export default {
 
   axios: {
     // proxy: true,
-    prefix: '/api',
+    // prefix: '/api',
     credentials: true,
     proxyHeaders: false,
   },
 
   proxy: {
+    '/inference': {
+      target: 'http://54.153.27.55:8787/',
+      changeOrigin: true,
+    },
     '/api': {
       target: 'http://venom.nlplab.cc:7089/', 
       changeOrigin: true,
@@ -74,7 +78,7 @@ export default {
       },
       firestore: true,
     }
- },
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
