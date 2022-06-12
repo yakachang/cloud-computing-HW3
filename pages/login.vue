@@ -24,9 +24,9 @@ export default {
   name: 'LoginPage',
   methods: {
     async signInWithGoogle() {
-      var provider = new this.$fireModule.auth.GoogleAuthProvider();
-      
+      let provider = new this.$fireModule.auth.GoogleAuthProvider()
       let authData = await this.$fire.auth.signInWithPopup(provider)
+      this.$nuxt.refresh()
       this.$router.push('/')
     },
   },
