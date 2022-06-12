@@ -105,6 +105,7 @@
 <script>
 export default {
   name: 'VocabPage',
+  middleware: 'auth',
   async asyncData({store, $fire}) {
     const userIdToken = store.state.authUser.uid
     console.log(userIdToken)
