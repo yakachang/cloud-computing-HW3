@@ -148,16 +148,24 @@ export default {
   watch: {
     async 'selectedLevel'() {
       this.startIdxMapper[this.previousLevel] = this.cardIdx + 1
-      await this.$fire.firestore.collection('user').doc(this.userIdToken).update(this.startIdxMapper).then(() => {
+      const startIdxPromise = this.$fire.firestore.collection('user').doc(this.userIdToken).update(this.startIdxMapper).then(() => {
           console.log('Update data successful')
         }).catch(error => {
           console.log(error)
         })
       const level = this.levelMapper[this.selectedLevel]
       this.previousLevel = level
+      let newVocabs = {}
+      const vocabPromise = this.$fire.firestore.collection(level).get().then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          newVocabs[doc.id] = doc.data()
+        })
+        this.vocabs = newVocabs
+      })
       this.startIdx = this.startIdxMapper[level]
       this.offset = 0
-      console.log(this.startIdx)
+
+      await Promise.all([startIdxPromise, vocabPromise])
     }
   },
 }
