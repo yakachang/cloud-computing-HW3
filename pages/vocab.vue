@@ -112,6 +112,7 @@ export default {
   data() {
     return {
       selectedLevel: 0,
+      previousLevel: 'A1',
       levelMapper: {
         0: 'A1',
         1: 'A2',
@@ -137,10 +138,18 @@ export default {
     }
   },
   watch: {
-    'selectedLevel'() {
+    async 'selectedLevel'() {
+      this.startIdxMapper[this.previousLevel] = this.cardIdx
+      await this.$fire.firestore.collection('user').doc(this.userIdToken).update(this.startIdxMapper).then(() => {
+          console.log('Update data successful')
+        }).catch(error => {
+          console.log(error)
+        })
       const level = this.levelMapper[this.selectedLevel]
-      const startIdx = this.startIdxMapper[level]
-      console.log(startIdx)
+      this.previousLevel = level
+      this.startIdx = this.startIdxMapper[level]
+      this.offset = 0
+      console.log(this.startIdx)
     }
   },
 }
