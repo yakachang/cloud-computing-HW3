@@ -51,14 +51,14 @@
               <v-card
                 class="ma-5"
               >
-                <v-card-title class="text-h4">{{ vocabs[0]['headword'] }}</v-card-title>
+                <v-card-title class="text-h4">{{ vocabs[cardIdx]['headword'] }}</v-card-title>
                 <v-card-text>
                   <div class="text-subtitle-1">
-                    <p>({{ vocabs[0]['pos'] }}.)</p>
-                    <p>Definition: {{ vocabs[0]['en_def'] }}</p>
-                    <p>中文定義： {{ vocabs[0]['ch_def'] }}</p>
-                    <p>Example: {{ vocabs[0]['en_example'] }}</p>
-                    <p>中文翻譯： {{ vocabs[0]['ch_example'] }}</p>
+                    <p>({{ vocabs[cardIdx]['pos'] }}.)</p>
+                    <p>Definition: {{ vocabs[cardIdx]['en_def'] }}</p>
+                    <p>中文定義： {{ vocabs[cardIdx]['ch_def'] }}</p>
+                    <p>Example: {{ vocabs[cardIdx]['en_example'] }}</p>
+                    <p>中文翻譯： {{ vocabs[cardIdx]['ch_example'] }}</p>
                   </div>
                 </v-card-text>
               </v-card>
@@ -66,7 +66,10 @@
           </v-row>
         </v-container>
         <v-card-actions class="justify-end">
-          <v-btn text>
+          <v-btn
+            text
+            @click="offset+=1"
+          >
             Next Card
           </v-btn>
         </v-card-actions>
@@ -125,9 +128,13 @@ export default {
         { text: 'C1', icon: 'mdi-flag' },
         { text: 'C2', icon: 'mdi-flag' },
       ],
+      offset: 0
     }
   },
   computed: {
+    cardIdx() {
+      return this.startIdx + this.offset
+    }
   },
   watch: {
     'selectedLevel'() {
