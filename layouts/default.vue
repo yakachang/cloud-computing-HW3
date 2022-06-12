@@ -11,11 +11,18 @@
           v-for="(item, i) in items"
           :to="item.to"
           :key="i"
-          class="text-capitalize text--secondary"
+          class="text-capitalize text-subtitle-1"
           text
           nuxt
         >
           {{ item.title }}
+        </v-btn>
+        <v-btn
+          text
+          class="text-capitalize text-subtitle-1"
+          @click="logout"
+        >
+          Logout
         </v-btn>
       </div>
     </v-app-bar>
@@ -57,5 +64,11 @@ export default {
       ]
     }
   },
+  methods: {
+    async logout() {
+      await this.$fire.auth.signOut()
+      this.$router.replace('/login')
+    }
+  }
 }
 </script>
