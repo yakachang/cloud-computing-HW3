@@ -42,7 +42,7 @@
           dark
           color="pink"
         >
-          <v-toolbar-title>Vocabularies</v-toolbar-title>
+          <v-toolbar-title>Vocabularies ({{cardIdx+1}}/{{boundMapper[selectedLevel]}})</v-toolbar-title>
         </v-app-bar>
 
         <v-container>
@@ -129,7 +129,15 @@ export default {
         { text: 'C1', icon: 'mdi-flag' },
         { text: 'C2', icon: 'mdi-flag' },
       ],
-      offset: 0
+      offset: 0,
+      boundMapper: {
+        0: 498,
+        1: 940,
+        2: 1801,
+        3: 2494,
+        4: 1504,
+        5: 2123
+      }
     }
   },
   computed: {
@@ -139,7 +147,7 @@ export default {
   },
   watch: {
     async 'selectedLevel'() {
-      this.startIdxMapper[this.previousLevel] = this.cardIdx
+      this.startIdxMapper[this.previousLevel] = this.cardIdx + 1
       await this.$fire.firestore.collection('user').doc(this.userIdToken).update(this.startIdxMapper).then(() => {
           console.log('Update data successful')
         }).catch(error => {
