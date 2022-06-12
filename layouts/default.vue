@@ -58,8 +58,8 @@ export default {
         },
         {
           icon: 'mdi-file',
-          title: 'Translate',
-          to: '/translate/',
+          title: 'Q&A System',
+          to: '/QAsystem/',
         },
       ]
     }
