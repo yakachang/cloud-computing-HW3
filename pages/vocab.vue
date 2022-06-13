@@ -147,6 +147,14 @@ export default {
         4: 'C1',
         5: 'C2'
       },
+      indexMapper: {
+        'A1': 0,
+        'A2': 1,
+        'B1': 2,
+        'B2': 3,
+        'C1': 4,
+        'C2': 5
+      },
       offset: 0,
       boundMapper: {
         0: 498,
@@ -184,9 +192,17 @@ export default {
       this.selectedLevel += 1
     }
   },
+  async beforeDestroy() {
+    this.startIdxMapper[this.previousLevel] = Math.min(this.cardIdx + 1, this.boundMapper[this.indexMapper[this.previousLevel]])
+    await this.$fire.firestore.collection('user').doc(this.userIdToken).update(this.startIdxMapper).then(() => {
+        console.log('Update data successful')
+      }).catch(error => {
+        console.log(error)
+      })
+  },
   watch: {
     async 'selectedLevel'() {
-      this.startIdxMapper[this.previousLevel] = this.cardIdx + 1
+      this.startIdxMapper[this.previousLevel] = Math.min(this.cardIdx + 1, this.boundMapper[this.indexMapper[this.previousLevel]])
       const startIdxPromise = this.$fire.firestore.collection('user').doc(this.userIdToken).update(this.startIdxMapper).then(() => {
           console.log('Update data successful')
         }).catch(error => {
