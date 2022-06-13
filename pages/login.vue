@@ -26,10 +26,29 @@ export default {
     isAuthenticated() {
       return this.$store.state.authUser
     },
+    userIdToken() {
+      return this.$store.state.authUser.uid
+    }
   },
   watch: {
-    isAuthenticated(value) {
+    async isAuthenticated(value) {
       if (value) {
+        await this.$fire.firestore.collection('user').doc(this.userIdToken).get().then(doc => {
+          if (!doc.exists) {
+            this.$fire.firestore.collection('user').doc(this.userIdToken).set({
+              A1: 0,
+              A2: 0,
+              B1: 0,
+              B2: 0,
+              C1: 0,
+              C2: 0
+            }).then(() => {
+              console.log('Create user data successful')
+            }).catch(error => {
+              console.log(error)
+            })
+          }
+        })
         this.$router.push("/")
       }
     },
