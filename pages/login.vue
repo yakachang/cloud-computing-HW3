@@ -22,6 +22,18 @@
 <script>
 export default {
   name: 'LoginPage',
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.authUser
+    },
+  },
+  watch: {
+    isAuthenticated(value) {
+      if (value) {
+        this.$router.push("/")
+      }
+    },
+  },
   methods: {
     async signInWithGoogle() {
       let provider = new this.$fireModule.auth.GoogleAuthProvider()
